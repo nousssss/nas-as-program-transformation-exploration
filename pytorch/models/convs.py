@@ -28,9 +28,7 @@ class ConvModule(nn.Module):
 
 
 class Conv(ConvModule):
-    def __init__(
-        self, in_channels, out_channels, kernel_size, stride, bias, padding=1, args=None
-    ):
+    def __init__( self, in_channels, out_channels, kernel_size, stride, bias, padding=1, args=None):
         super(Conv, self).__init__()
         self.conv = nn.Conv2d(
             in_channels,
@@ -46,9 +44,7 @@ class Conv(ConvModule):
 
 
 class Seq1(ConvModule):
-    def __init__(
-        self, in_channels, out_channels, kernel_size, stride, bias, padding=1, args=None
-    ):
+    def __init__(self, in_channels, out_channels, kernel_size, stride, bias, padding=1, args=None):
         super(Seq1, self).__init__()
         convs = []
         sf = args["split_factor"]

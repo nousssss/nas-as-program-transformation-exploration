@@ -1,13 +1,17 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
+# list of public names that should be imported when this module is imported 
 __all__ = ["ResNet18", "ResNet34", "ResNet50", "ResNet101", "ResNet152"]
 
 
 class BasicBlock(nn.Module):
+    # expansion factor for the number of channels in the output feature maps (depth)
     expansion = 1
 
     def __init__(self, in_planes, planes, layer_config):
+        # layerconfig : dictionary containing configuration parameters for the layers within the block
+
         super(BasicBlock, self).__init__()
         conv = layer_config["conv"]
         stride = layer_config["stride"]
@@ -33,6 +37,10 @@ class BasicBlock(nn.Module):
         self.bn2 = nn.BatchNorm2d(planes)
 
         self.shortcut = nn.Sequential()
+        # A "shortcut" connection is created. 
+        # If the stride of the block is not 1 (it downsamples the input) 
+        # or if the number of input channels does not match the number of output channels after expansion, 
+        # we apply conv1x1 is to match the dimensions
         if stride != 1 or in_planes != self.expansion * planes:
             self.shortcut = nn.Sequential(
                 nn.Conv2d(
@@ -48,6 +56,7 @@ class BasicBlock(nn.Module):
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))
         out = self.bn2(self.conv2(out))
+        # skip connection
         out += self.shortcut(x)
         out = F.relu(out)
         return out
